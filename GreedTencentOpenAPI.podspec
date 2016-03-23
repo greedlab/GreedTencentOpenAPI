@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name = "GreedTencentOpenAPI"
-  s.version = "2.9.5"
+  s.version = "2.9.5.1"
   s.license = "MIT"
   s.summary = "ios版腾讯开放平台SDK"
   s.homepage = "https://github.com/greedlab/GreedTencentOpenAPI"
