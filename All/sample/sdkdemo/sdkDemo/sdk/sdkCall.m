@@ -81,7 +81,7 @@ static sdkCall *g_instance = nil;
 
 - (void)tencentDidNotLogin:(BOOL)cancelled
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoginFailed object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoginCancelled object:self];
 }
 
 - (void)tencentDidNotNetWork
@@ -188,19 +188,6 @@ static sdkCall *g_instance = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:kGetVipRichInfoResponse object:self  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:response, kResponse, nil]];
 }
-
-
-- (void)matchNickTipsResponse:(APIResponse*) response
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMatchNickTipsResponse object:self  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:response, kResponse, nil]];
-}
-
-
-- (void)getIntimateFriendsResponse:(APIResponse*) response
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kGetIntimateFriendsResponse object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:response, kResponse, nil]];
-}
-
 
 - (void)sendStoryResponse:(APIResponse*) response
 {

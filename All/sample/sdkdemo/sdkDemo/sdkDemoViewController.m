@@ -11,12 +11,9 @@
 #import "cellInfo.h"
 #import "QZoneTableViewController.h"
 #import "QQVipTableViewController.h"
-#import "QQTTableViewController.h"
-#import "WeiyunTableViewController.h"
 #import "QQApiDemoController.h"
 #import <time.h>
 #import <TencentOpenAPI/TencentOAuth.h>
-#import <TencentOpenAPI/WeiBoAPI.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <CommonCrypto/CommonDigest.h>
@@ -70,13 +67,13 @@
     [cellApiInfo addObject:[cellInfo info:@"QQ定向分享" target:nil Sel:@selector(pushSelectViewController:) viewController:nil userInfo:[NSNumber numberWithInteger:kApiQQ]]];
     [cellApiInfo addObject:[cellInfo info:@"QQ空间" target:self Sel:@selector(pushSelectViewController:) viewController:nil userInfo:[NSNumber numberWithInteger:kApiQZone]]];
     [cellApiInfo addObject:[cellInfo info:@"QQ会员" target:nil Sel:@selector(pushSelectViewController:) viewController:nil userInfo:[NSNumber numberWithInteger:kApiQQVip]]];
-    [cellApiInfo addObject:[cellInfo info:@"腾讯微云" target:nil Sel:@selector(pushSelectViewController:) viewController:nil userInfo:[NSNumber numberWithInteger:kApiQQCloud]]];
     
     [[self sectionName] addObject:@"api"];
     [[self sectionRow] addObject:cellApiInfo];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccessed) name:kLoginSuccessed object:[sdkCall getinstance]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:kLoginFailed object:[sdkCall getinstance]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginCancelled) name:kLoginCancelled object:[sdkCall getinstance]];
 }
 - (void)viewDidLoad
 {
@@ -95,25 +92,16 @@
                      kOPEN_PERMISSION_GET_USER_INFO,
                      kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,
                      kOPEN_PERMISSION_ADD_ALBUM,
-                     kOPEN_PERMISSION_ADD_IDOL,
                      kOPEN_PERMISSION_ADD_ONE_BLOG,
-                     kOPEN_PERMISSION_ADD_PIC_T,
                      kOPEN_PERMISSION_ADD_SHARE,
                      kOPEN_PERMISSION_ADD_TOPIC,
                      kOPEN_PERMISSION_CHECK_PAGE_FANS,
-                     kOPEN_PERMISSION_DEL_IDOL,
-                     kOPEN_PERMISSION_DEL_T,
-                     kOPEN_PERMISSION_GET_FANSLIST,
-                     kOPEN_PERMISSION_GET_IDOLLIST,
                      kOPEN_PERMISSION_GET_INFO,
                      kOPEN_PERMISSION_GET_OTHER_INFO,
-                     kOPEN_PERMISSION_GET_REPOST_LIST,
                      kOPEN_PERMISSION_LIST_ALBUM,
                      kOPEN_PERMISSION_UPLOAD_PIC,
                      kOPEN_PERMISSION_GET_VIP_INFO,
                      kOPEN_PERMISSION_GET_VIP_RICH_INFO,
-                     kOPEN_PERMISSION_GET_INTIMATE_FRIENDS_WEIBO,
-                     kOPEN_PERMISSION_MATCH_NICK_TIPS_WEIBO,
                      nil];
     
     [[[sdkCall getinstance] oauth] authorize:permissions inSafari:NO];
@@ -128,9 +116,6 @@
             break;
         case kApiQQVip:
             rootViewController = [[QQVipTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            break;
-        case kApiQQCloud:
-            rootViewController = [[WeiyunTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
             break;
         case kApiQQ:
             rootViewController = [[QQApiDemoController alloc] init];
@@ -176,6 +161,11 @@
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"结果" message:@"登录失败" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil];
     [alertView show];
+}
+
+- (void) loginCancelled
+{
+    //do nothing
 }
 
 #pragma mark - Table view data source

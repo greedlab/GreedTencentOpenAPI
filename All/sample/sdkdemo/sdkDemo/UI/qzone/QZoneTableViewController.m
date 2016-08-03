@@ -17,6 +17,7 @@
 #import "TCApiObjectEditController.h"
 #import "TCApiObjectEditController.h"
 #import "TencentOpenAPI/QQApiInterface.h"
+#import "ShareToQZoneViewController.h"
 
 #define TCSafeRelease(__tcObj) { [__tcObj release]; __tcObj = nil; }
 
@@ -50,6 +51,9 @@
     {
         // Custom initialization
         NSMutableArray *cellQZone = [NSMutableArray array];
+        [cellQZone addObject:[cellInfo info:@"分享纯文本到QZone" target:self Sel:@selector(shareTextToQZone) viewController:nil]];
+        [cellQZone addObject:[cellInfo info:@"分享图片到QZone" target:self Sel:@selector(shareImgToQZone) viewController:nil]];
+        [cellQZone addObject:[cellInfo info:@"分享视频到QZone" target:self Sel:@selector(shareVideoToQZone) viewController:nil]];
         [cellQZone addObject:[cellInfo info:@"获取用户信息" target:self Sel:@selector(getInfo) viewController:nil]];
         
         [cellQZone addObject:[cellInfo info:@"分享到Qzone" target:self Sel:@selector(shareToQzone) viewController:nil]];
@@ -114,7 +118,7 @@
          NSURL* url = [NSURL URLWithString:apiObjEditCtrl.objUrl.text];
          
          QQApiNewsObject* imgObj = [QQApiNewsObject objectWithURL:url title:apiObjEditCtrl.objTitle.text description:apiObjEditCtrl.objDesc.text previewImageURL:previewURL];
-         
+         [imgObj setTitle:apiObjEditCtrl.objTitle.text ? : @""];
          [imgObj setCflag:kQQAPICtrlFlagQZoneShareOnStart];
          
          SendMessageToQQReq* req = [SendMessageToQQReq reqWithContent:imgObj];
@@ -336,7 +340,6 @@
     }
 }
 
-
 - (void)analysisResponse:(NSNotification *)notify
 {
     if (notify)
@@ -405,11 +408,37 @@
             
             break;
         }
+        case EQQAPIVERSIONNEEDUPDATE:
+        {
+            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"Error" message:@"当前QQ版本太低，需要更新" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
+            [msgbox show];
+            break;
+        }
         default:
         {
             break;
         }
     }
+}
+
+#pragma mark QZONE RELATIVE
+
+- (void)shareTextToQZone
+{
+    ShareToQZoneViewController *ctr = [[ShareToQZoneViewController alloc] initWithShareType:kShareToQZoneType_Text];
+    [self.navigationController pushViewController:ctr animated:YES];
+}
+
+- (void)shareImgToQZone
+{
+    ShareToQZoneViewController *ctr = [[ShareToQZoneViewController alloc] initWithShareType:kShareToQZoneType_Images];
+    [self.navigationController pushViewController:ctr animated:YES];
+}
+
+- (void)shareVideoToQZone
+{
+    ShareToQZoneViewController *ctr = [[ShareToQZoneViewController alloc] initWithShareType:kShareToQZoneType_Video];
+    [self.navigationController pushViewController:ctr animated:YES];
 }
 
 

@@ -21,6 +21,7 @@
 //login
 #define kLoginSuccessed @"loginSuccessed"
 #define kLoginFailed    @"loginFailed"
+#define kLoginCancelled @"loginCancelled"
 
 //qzone
 #define kGetUserInfoResponse @"getUserInfoResponse"
@@ -37,11 +38,6 @@
 #define kGetVipRichInfoResponse @"kGetVipRichInfoResponse"
 #define kSendStoryResponse @"kSendStoryResponse"
 #define kCheckPageFansResponse @"kCheckPageFansResponse"
-
-
-//微博
-#define kMatchNickTipsResponse @"kMatchNickTipsResponse"
-#define kGetIntimateFriendsResponse @"kGetIntimateFriendResponse"
 
 //TCAPIRequest
 #define kTencentCGIRequest     @"kTencentCGIRequest"
